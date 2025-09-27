@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import 'athlete_data.dart';
 
+enum Gender { male, female }
+
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
 
@@ -20,7 +22,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final _heightController = TextEditingController();
   final _cityController = TextEditingController();
   final _stateController = TextEditingController();
-  String _gender = 'Male';
+// ADD this line:
+Gender _selectedGender = Gender.male;
 
   @override
   Widget build(BuildContext context) {
@@ -107,33 +110,26 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               ),
               const SizedBox(height: 16),
               const Text('Gender', style: TextStyle(fontSize: 16)),
-              Row(
-                children: [
-                  Expanded(
-                    child: RadioListTile<String>(
-                      title: const Text('Male'),
-                      value: 'Male',
-                      groupValue: _gender,
-                      onChanged: (value) {
-                        setState(() {
-                          _gender = value!;
-                        });
-                      },
-                    ),
+              const SizedBox(height: 8), // Adds a little space
+              SegmentedButton<Gender>(
+                segments: const <ButtonSegment<Gender>>[
+                  ButtonSegment<Gender>(
+                    value: Gender.male,
+                    label: Text('Male'),
+                    icon: Icon(Icons.male),
                   ),
-                  Expanded(
-                    child: RadioListTile<String>(
-                      title: const Text('Female'),
-                      value: 'Female',
-                      groupValue: _gender,
-                      onChanged: (value) {
-                        setState(() {
-                          _gender = value!;
-                        });
-                      },
-                    ),
+                  ButtonSegment<Gender>(
+                    value: Gender.female,
+                    label: Text('Female'),
+                    icon: Icon(Icons.female),
                   ),
                 ],
+                selected: <Gender>{_selectedGender},
+                onSelectionChanged: (Set<Gender> newSelection) {
+                  setState(() {
+                    _selectedGender = newSelection.first;
+                  });
+                },
               ),
               const SizedBox(height: 32),
               ElevatedButton(
@@ -146,7 +142,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       height: double.parse(_heightController.text),
                       city: _cityController.text,
                       state: _stateController.text,
-                      gender: _gender,
+                      gender: _selectedGender.name,
                     );
                     context.go('/main');
                   }

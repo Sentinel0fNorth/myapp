@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer';
 
 import 'athlete_data.dart';
 
@@ -77,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       final newWeight = double.parse(_weightController.text);
                       final newHeight = double.parse(_heightController.text);
                       Provider.of<AthleteData>(context, listen: false).updateWeightAndHeight(newWeight, newHeight);
-                      print('New Weight: $newWeight, New Height: $newHeight');
+                      log('New Weight: $newWeight, New Height: $newHeight');
                    }
                 },
                 child: const Text('Save Changes'),
@@ -85,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                   print('Upload Sports Certificates button pressed');
+                   log('Upload Sports Certificates button pressed');
                 },
                 child: const Text('Upload Sports Certificates'),
               ),

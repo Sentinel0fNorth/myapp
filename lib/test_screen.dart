@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:developer';
 
 class TestScreen extends StatelessWidget {
   final String testName;
@@ -37,7 +38,7 @@ class TestScreen extends StatelessWidget {
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                print('Upload button pressed');
+                log('Upload button pressed');
               },
               child: const Text('Record or Upload Video'),
             ),
