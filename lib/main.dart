@@ -8,6 +8,7 @@ import 'main_screen.dart';
 import 'profile_screen.dart';
 import 'profile_setup_screen.dart';
 import 'test_screen.dart';
+import 'test_results_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +31,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/results',
+      builder: (context, state) => const TestResultsScreen(),
     ),
   ],
 );

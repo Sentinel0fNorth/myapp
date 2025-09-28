@@ -1,32 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'athlete_data.dart';
 import 'test_result.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+class TestResultsScreen extends StatelessWidget {
+  const TestResultsScreen({super.key});
 
   List<TestResult> _getMockTestResults(String athleteName) {
     return [
@@ -65,7 +45,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         athleteName: athleteName,
         email: 'bogusbirla@gmail.com',
         jumpHeight: null,
-        numberOfReps: 47,
+        numberOfReps: 30,
         formScore: 7.8,
         confidence: 89,
         submittedAt: DateTime(2025, 9, 27, 15, 22, 45),
@@ -81,93 +61,22 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome, ${athleteData.fullName}!', style: GoogleFonts.poppins()),
+        title: Text('Test Results', style: GoogleFonts.poppins()),
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () => context.go('/profile'),
-          ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: theme.colorScheme.onPrimary,
-          unselectedLabelColor: theme.colorScheme.onPrimary.withOpacity(0.7),
-          indicatorColor: theme.colorScheme.tertiary,
-          indicatorWeight: 3,
-          labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-          tabs: const [
-            Tab(
-              icon: Icon(Icons.assessment),
-              text: 'Tests',
-            ),
-            Tab(
-              icon: Icon(Icons.history),
-              text: 'History',
-            ),
-          ],
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          // Tests Tab
-          _buildTestsTab(context, theme),
-          // History Tab
-          _buildHistoryTab(context, testResults),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTestsTab(BuildContext context, ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Available Tests',
-            style: theme.textTheme.headlineSmall?.copyWith(fontFamily: 'Poppins'),
-          ),
-          const SizedBox(height: 16),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.sports_gymnastics, color: theme.colorScheme.secondary),
-              title: Text('Vertical Jump Test', style: GoogleFonts.poppins()),
-              subtitle: Text('Test your explosive leg power', style: GoogleFonts.poppins(fontSize: 12)),
-              onTap: () => context.go('/test/Vertical Jump Test'),
+      body: testResults.isEmpty
+          ? const Center(
+              child: Text('No test results available'),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: testResults.length,
+              itemBuilder: (context, index) {
+                final result = testResults[index];
+                return _TestResultCard(result: result);
+              },
             ),
-          ),
-          const SizedBox(height: 16),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.fitness_center, color: theme.colorScheme.secondary),
-              title: Text('Sit-ups Test', style: GoogleFonts.poppins()),
-              subtitle: Text('Test your core strength', style: GoogleFonts.poppins(fontSize: 12)),
-              onTap: () => context.go('/test/Sit-ups Test'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHistoryTab(BuildContext context, List<TestResult> testResults) {
-    if (testResults.isEmpty) {
-      return const Center(
-        child: Text('No test results available'),
-      );
-    }
-    
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemCount: testResults.length,
-      itemBuilder: (context, index) {
-        final result = testResults[index];
-        return _TestResultCard(result: result);
-      },
     );
   }
 }

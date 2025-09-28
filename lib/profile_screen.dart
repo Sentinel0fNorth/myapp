@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer';
@@ -35,6 +36,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text('My Profile', style: GoogleFonts.poppins()),
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/main'),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
